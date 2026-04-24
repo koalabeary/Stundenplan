@@ -1,0 +1,60 @@
+﻿<Window x:Class="Stundenplan.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Stundenplan"
+        mc:Ignorable="d"
+        Title="Stundenplan" Height="500" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" Padding="15" BorderBrush="#DDD" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+
+                <Viewbox MaxHeight="50" Margin="0,0,40,0">
+                    <TextBlock Text="Stundenplan" FontWeight="Bold" Foreground="#222"/>
+                </Viewbox>
+
+                <Viewbox MaxHeight="35" Margin="10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Von:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#666"/>
+                        <TextBox Name="Start" Width="60" Padding="5" VerticalContentAlignment="Center" 
+                                 BorderBrush="#CCC" BorderThickness="1"/>
+                    </StackPanel>
+                </Viewbox>
+
+                <Viewbox MaxHeight="35" Margin="10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Bis:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#666"/>
+                        <TextBox Name="Ende" Width="60" Padding="5" VerticalContentAlignment="Center"
+                                 BorderBrush="#CCC" BorderThickness="1"/>
+                    </StackPanel>
+                </Viewbox>
+
+                <Viewbox MaxHeight="35" Margin="30,0,0,0">
+                    <Button Content="Plan erstellen" Padding="15,5" 
+                            Background="#007AFF" Foreground="White" BorderThickness="0">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Viewbox>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="20">
+            <Rectangle Fill="White" RadiusX="10" RadiusY="10">
+                <Rectangle.Effect>
+                    <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
+                </Rectangle.Effect>
+            </Rectangle>
+            <TextBlock Text="Hier entsteht dein Raster..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAA"/>
+        </Grid>
+    </Grid>
+</Window>
