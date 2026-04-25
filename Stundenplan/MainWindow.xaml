@@ -31,13 +31,13 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Bis:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#666"/>
                         <TextBox Name="Ende" Width="60" Padding="5" VerticalContentAlignment="Center"
-                                 BorderBrush="#CCC" BorderThickness="1"/>
+                                 BorderBrush="#CCC" BorderThickness="1" />
                     </StackPanel>
                 </Viewbox>
 
                 <Viewbox MaxHeight="35" Margin="30,0,0,0">
-                    <Button Content="Plan erstellen" Padding="15,5" 
-                            Background="#007AFF" Foreground="White" BorderThickness="0">
+                    <Button Name="Erstellen" Content="Plan erstellen" Padding="15,5" 
+                            Background="#007AFF" Foreground="White" BorderThickness="0" Click="Erstellen_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="4"/>
@@ -54,7 +54,7 @@
                     <DropShadowEffect BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
                 </Rectangle.Effect>
             </Rectangle>
-            <TextBlock Text="Hier entsteht dein Raster..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAA"/>
+            <TextBlock Text="Hier entsteht ein Raster..." HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#AAA"/>
         </Grid>
     </Grid>
 </Window>
