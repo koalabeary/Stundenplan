@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stundenplan"
         mc:Ignorable="d"
-        Title="Stundenplan Designer" Height="900" Width="1500" Background="#F2F2F7">
+        Title="Stundenplan Designer" Height="1000" Width="1500" Background="#F2F2F7">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -97,31 +97,22 @@
         </Border>
 
         <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="23*"/>
-            </Grid.ColumnDefinitions>
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Padding="40" Grid.ColumnSpan="2">
-                <Grid HorizontalAlignment="Center">
-                    <Border Background="White" Width="1122" Height="794" CornerRadius="2">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="30" Color="#000000" Opacity="0.1" ShadowDepth="5"/>
-                        </Border.Effect>
-                    </Border>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Background="#EBEDF0">
+                <Border x:Name="PapierBorder"
+        Width="1122" 
+        Height="Auto"  Background="White" 
+        Margin="50" 
+        HorizontalAlignment="Center" 
+        VerticalAlignment="Top"
+        BorderBrush="#D1D1D6"
+        BorderThickness="1">
 
-                    <Canvas x:Name="Leinwand" 
-                            Width="1122" 
-                            Height="794" 
-                            Background="White">
-                        <Canvas.Effect>
-                            <DropShadowEffect BlurRadius="20" ShadowDepth="2" Opacity="0.1" />
-                        </Canvas.Effect>
-
-                    </Canvas> 
-                </Grid>
+                    <Canvas x:Name="Leinwand" Width="1122">
+                    </Canvas>
+                </Border>
             </ScrollViewer>
 
-            <Border VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,30,30" Background="#80FFFFFF" Padding="10,5" CornerRadius="5" Grid.Column="1">
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,30,30" Background="#CCFFFFFF" Padding="10,5" CornerRadius="5">
                 <TextBlock Text="Format: DIN-A4 Quer" Foreground="#3A3A3C" FontSize="12" FontWeight="Medium"/>
             </Border>
         </Grid>

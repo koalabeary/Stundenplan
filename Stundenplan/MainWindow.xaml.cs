@@ -62,7 +62,9 @@ namespace Stundenplan
 
         private void BtnFachHinzufuegen_Click(object sender, RoutedEventArgs e)
         {
-
+           Fach fach = new Fach();
+            fach.Activate();
+            fach.Show();
         }
     }
 
@@ -106,7 +108,6 @@ namespace Stundenplan
 
         public Tabelle(TimeSpan start, TimeSpan ende, string titel)
         {
-            // Sicherstellen, dass Start vor Ende liegt
             this.begin = start;
             this.end = ende;
             this.titel = titel;
@@ -116,16 +117,23 @@ namespace Stundenplan
         public Canvas erstellen(Canvas leinwand)
         {
             leinwand.Children.Clear();
-            leinwand.Background = Brushes.White; // Sauberer weißer Hintergrund
 
-            // --- LAYOUT PARAMETER ---
-            double randLinks = 80;      // Etwas mehr Platz für die Uhrzeiten
-            double randOben = 160;
-            double randRechts = 40;
-            double nutzbareBreite = leinwand.Width - randLinks - randRechts;
-            double spaltenBreite = nutzbareBreite / 5;
+            // --- 1. DYNAMISCHE HÖHE BERECHNEN ---
             double stundenHoehe = 60;
+            double randOben = 160;
+            // Puffer auf 80 erhöht, damit das nach unten verschobene "18:00" Label sauber reinpasst
+            double randUnten = 80;
             int anzahlStunden = (int)Math.Ceiling((end - begin).TotalHours);
+
+            // Gesamthöhe berechnen und Leinwand zuweisen
+            double benötigteHoehe = randOben + (anzahlStunden * stundenHoehe) + randUnten;
+            leinwand.Height = benötigteHoehe;
+
+            // --- RESTLICHE PARAMETER ---
+            double randLinks = 60;
+            double randRechts = 50;
+            double nutzbareBreite = 1122 - randLinks - randRechts;
+            double spaltenBreite = nutzbareBreite / 7;
 
             // --- 1. TITEL & DATUM ---
             TextBlock titelLabel = new TextBlock
@@ -133,8 +141,7 @@ namespace Stundenplan
                 Text = titel.ToUpper(),
                 FontSize = 32,
                 FontWeight = FontWeights.Black,
-                Foreground = new SolidColorBrush(Color.FromRgb(44, 62, 80)), // Dark Blue-Grey
-                
+                Foreground = new SolidColorBrush(Color.FromRgb(44, 62, 80)),
             };
             Canvas.SetLeft(titelLabel, randLinks);
             Canvas.SetTop(titelLabel, 40);
@@ -152,7 +159,7 @@ namespace Stundenplan
             leinwand.Children.Add(infoLabel);
 
             // --- 2. ZEBRA-STREIFEN & UHRZEITEN ---
-            for (int i = 0; i < anzahlStunden; i++)
+            for (int i = 0; i <= anzahlStunden; i++)
             {
                 double yPos = randOben + (i * stundenHoehe);
 
@@ -163,7 +170,7 @@ namespace Stundenplan
                     {
                         Width = nutzbareBreite,
                         Height = stundenHoehe,
-                        Fill = new SolidColorBrush(Color.FromRgb(249, 250, 251)) // Ganz helles Grau
+                        Fill = new SolidColorBrush(Color.FromRgb(249, 250, 251))
                     };
                     Canvas.SetLeft(rowBack, randLinks);
                     Canvas.SetTop(rowBack, yPos);
@@ -179,6 +186,7 @@ namespace Stundenplan
                     Foreground = new SolidColorBrush(Color.FromRgb(127, 140, 141))
                 };
                 Canvas.SetLeft(zeitLabel, 20);
+                // Das Label rückt durch die Formel um ~20px nach unten, was durch randUnten=80 nun passt
                 Canvas.SetTop(zeitLabel, yPos + (stundenHoehe / 2) - 10);
                 leinwand.Children.Add(zeitLabel);
 
@@ -194,6 +202,7 @@ namespace Stundenplan
                 };
                 leinwand.Children.Add(hLine);
             }
+
             // Abschlusslinie unten
             Line bottomLine = new Line
             {
@@ -211,7 +220,7 @@ namespace Stundenplan
             {
                 Width = nutzbareBreite,
                 Height = 45,
-                Fill = new SolidColorBrush(Color.FromRgb(52, 73, 94)), // Kräftiges Dunkelblau
+                Fill = new SolidColorBrush(Color.FromRgb(52, 73, 94)),
                 RadiusX = 4,
                 RadiusY = 4
             };
@@ -219,8 +228,8 @@ namespace Stundenplan
             Canvas.SetTop(headerBar, randOben - 45);
             leinwand.Children.Add(headerBar);
 
-            string[] tage = { "MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG" };
-            for (int i = 0; i < 5; i++)
+            string[] tage = { "MONTAG", "DIENSTAG", "MITTWOCH", "DONNERSTAG", "FREITAG", "SAMSTAG", "SONNTAG" };
+            for (int i = 0; i < tage.Length; i++)
             {
                 // Wochentag Text
                 TextBlock tagText = new TextBlock
@@ -244,7 +253,9 @@ namespace Stundenplan
                         X1 = randLinks + (i * spaltenBreite),
                         X2 = randLinks + (i * spaltenBreite),
                         Y1 = randOben - 45,
-                        Y2 = randOben + (anzahlStunden * stundenHoehe),
+                        // WICHTIG: Hier wurde das "+ 1" entfernt, damit die vertikale Linie 
+                        // bündig mit der letzten horizontalen Linie abschließt!
+                        Y2 = randOben + ((anzahlStunden+1) * stundenHoehe),
                         Stroke = new SolidColorBrush(Color.FromRgb(230, 233, 237)),
                         StrokeThickness = 1
                     };
@@ -256,5 +267,5 @@ namespace Stundenplan
         }
     }
 
-
+   
 }
