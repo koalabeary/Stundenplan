@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Stundenplan"
+        xmlns:hw="http://schemas.hpod9.com/haley/wpf"
+        xmlns:hm="http://schemas.hpod9.com/haley/mvvm"
         mc:Ignorable="d"
-        Title="Fach" Height="300" Width="300">
+        Title="Fach" Height="320" Width="300">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,20 +18,20 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="90"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="94"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="0" Grid.Column="0" Content="Fachname:" VerticalAlignment="Center"/>
-        <TextBox Name="Titel" Grid.Row="0" Grid.Column="1" Margin="0,4" Padding="4"/>
+        <Label Grid.Column="0" Content="Fachname:" VerticalAlignment="Center" Height="26"/>
+        <TextBox Name="Titel" Grid.Row="0" Grid.Column="1" Margin="0,4,0,4" Padding="4"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Dauer (Std.):" VerticalAlignment="Center"/>
-        <TextBox Name="Dauer" Grid.Row="1" Grid.Column="1" Margin="0,4" Padding="4"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Dauer (Std.):" VerticalAlignment="Center" Height="26"/>
+        <TextBox Name="Dauer" Grid.Row="1" Grid.Column="1" Margin="0,4,0,4" Padding="4"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Farbe (Hex):" VerticalAlignment="Center"/>
-        <TextBox Name="Farbe" Grid.Row="2" Grid.Column="1" Text="#34495E" Margin="0,4" Padding="4"/>
+
+        <hw:ColorPickerButton x:Name="farbe" Margin="0,1,1,101" Height="30" Grid.Row="2" Content="Farbe" />
 
         <Button Grid.Row="4" Grid.ColumnSpan="2" Content="Speichern" Click="Button_Click" 
-                Margin="0,16,0,0" Padding="8" Background="#2C3E50" Foreground="White" FontWeight="Bold"/>
+                Margin="0,8,0,8" Padding="8" Background="#2C3E50" Foreground="White" FontWeight="Bold"/>
     </Grid>
 </Window>

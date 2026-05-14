@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Haley.Abstractions;
+using Haley.Services;
 
 namespace Stundenplan
 {
@@ -24,30 +27,71 @@ namespace Stundenplan
             InitializeComponent();
         }
 
+        public bool gespeichert = false;
+        public event Action<FachErstellen> SpeichernErfolgreich;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(Titel.Text)) {
-                string s = Titel.Text;
-                Times n = new Times();
-                n.umwandlung(Dauer.Text);
+            string s;
+            TimeSpan dauer;
+            Color fa = farbe.SelectedColor;
 
+            // Prüfe auf Korrekte Eingabe und gebe das Objekt weiter
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(Titel.Text))
+                {
+                    s = Titel.Text;
+                    Times n = new Times();
+                    dauer = n.umwandlung(Dauer.Text);
+                    FachErstellen f = new FachErstellen(s,dauer,fa);
+                    gespeichert = true;
+                    SpeichernErfolgreich?.Invoke(f);
+                    this.Close();
+                }
+
+                else { MessageBox.Show("Der Titel fehlt."); }
             }
+
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
             
         }
+
+
     }
 
+
+    
     public class FachErstellen
     {
-        string titel;
-        int farbe;
-        TimeSpan dauer;
+        private static int counter;
+        private int id;
+        private string titel;
+        private TimeSpan dauer;
+        private Color farbe;
 
-        public FachErstellen(string t, int f, TimeSpan d)
+       
+
+        public FachErstellen(string t, TimeSpan d, Color c)
         {
+            this.id = ++counter;
             titel = t;
-            farbe = f;
+            farbe = c;
             dauer = d;
+           
         }
 
+        public int getID() { return this.id; }
+
+        public string getTitel() { return titel; }
+
+        public Color getColor() { return farbe; }
+
     }
+
+
 }

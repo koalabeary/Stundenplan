@@ -62,11 +62,61 @@ namespace Stundenplan
 
         private void BtnFachHinzufuegen_Click(object sender, RoutedEventArgs e)
         {
-           Fach fach = new Fach();
+            Fach fach = new Fach();
             fach.Activate();
             fach.Show();
+            fach.SpeichernErfolgreich += FachSpeichern ;
+         
+           
+        }
+
+        Dictionary<int, FachErstellen> fächerListe = new Dictionary<int, FachErstellen>();
+
+        private void FachSpeichern(FachErstellen neu) {
+
+            
+            fächerListe.Add(neu.getID(), neu);
+            MessageBox.Show("Das Fach " + neu.getTitel() + " wurde hinzugefügt.");
+
+
+            Button bibliothekBtn = new Button
+            {
+                Width = 80,
+                Height = 50,
+                Content = neu.getTitel(),
+                Background = new SolidColorBrush(neu.getColor()),
+                Foreground = Brushes.White,
+                Margin = new Thickness(0, 0, 15, 0), // Abstand zum nächsten Button
+                FontWeight = FontWeights.Bold,
+                Tag = neu.getID()
+            };
+
+            bibliothekBtn.Resources.Add(typeof(Border), new Style(typeof(Border))
+            {
+                Setters = { new Setter(Border.CornerRadiusProperty, new CornerRadius(8)) }
+            });
+
+            bibliothekBtn.Click += FachAuswahl_Click;
+
+            // Hinzufügen zum horizontalen Container
+            FaecherContainer.Children.Add(bibliothekBtn);
+        }
+
+        private void FachAuswahl_Click(object sender, RoutedEventArgs e)
+        {
+            // Wer hat geklingelt?
+            Button geklickterButton = (Button)sender;
+
+            // Welches Fach ist das?
+            int id = (int)geklickterButton.Tag;
+            FachErstellen gewählt = fächerListe[id];
+
+            // Jetzt kannst du das Fach z.B. auf den Canvas zeichnen
+            MessageBox.Show("Du willst " + gewählt.getTitel() + " im Plan platzieren!");
         }
     }
+
+ 
 
     public class Times
     {
@@ -99,6 +149,15 @@ namespace Stundenplan
         }
     }
 
+
+    // Fächer visuell in der Leiste darstellen als Buttons mit Lösch und Bearbeitungsfunktion
+    public class FächerEinfügen{
+
+
+
+
+    }
+
     public class Tabelle
     {
         private string titel;
@@ -106,6 +165,7 @@ namespace Stundenplan
         private TimeSpan begin;
         private TimeSpan end;
 
+        
         public Tabelle(TimeSpan start, TimeSpan ende, string titel)
         {
             this.begin = start;
@@ -118,6 +178,8 @@ namespace Stundenplan
         {
             leinwand.Children.Clear();
 
+            var farbe_stundenplan = Brushes.Indigo; 
+            
             // --- 1. DYNAMISCHE HÖHE BERECHNEN ---
             double stundenHoehe = 60;
             double randOben = 160;
@@ -141,7 +203,7 @@ namespace Stundenplan
                 Text = titel.ToUpper(),
                 FontSize = 32,
                 FontWeight = FontWeights.Black,
-                Foreground = new SolidColorBrush(Color.FromRgb(44, 62, 80)),
+                Foreground = farbe_stundenplan,   // Farbe vom Titel
             };
             Canvas.SetLeft(titelLabel, randLinks);
             Canvas.SetTop(titelLabel, 40);
@@ -152,7 +214,7 @@ namespace Stundenplan
                 Text = $"STUNDENPLAN • STAND: {erstellungszeitpunkt:dd.MM.yyyy}",
                 FontSize = 12,
                 FontWeight = FontWeights.SemiBold,
-                Foreground = Brushes.LightSlateGray
+                Foreground = Brushes.DarkGreen  // Farbe des Textes unter dem Titel
             };
             Canvas.SetLeft(infoLabel, randLinks);
             Canvas.SetTop(infoLabel, 85);
@@ -170,7 +232,7 @@ namespace Stundenplan
                     {
                         Width = nutzbareBreite,
                         Height = stundenHoehe,
-                        Fill = new SolidColorBrush(Color.FromRgb(249, 250, 251))
+                        Fill = new SolidColorBrush(Color.FromRgb(249, 250, 251))  // Farbe der Kästchen im Hintergrund
                     };
                     Canvas.SetLeft(rowBack, randLinks);
                     Canvas.SetTop(rowBack, yPos);
@@ -183,7 +245,7 @@ namespace Stundenplan
                     Text = begin.Add(TimeSpan.FromHours(i)).ToString(@"hh\:mm"),
                     FontSize = 14,
                     FontWeight = FontWeights.Bold,
-                    Foreground = new SolidColorBrush(Color.FromRgb(127, 140, 141))
+                    Foreground = farbe_stundenplan,          // Farbe der Uhrzeiten
                 };
                 Canvas.SetLeft(zeitLabel, 20);
                 // Das Label rückt durch die Formel um ~20px nach unten, was durch randUnten=80 nun passt
@@ -220,7 +282,7 @@ namespace Stundenplan
             {
                 Width = nutzbareBreite,
                 Height = 45,
-                Fill = new SolidColorBrush(Color.FromRgb(52, 73, 94)),
+                Fill = farbe_stundenplan,  // Farbe der Zeile, wo die Wochentage stehen
                 RadiusX = 4,
                 RadiusY = 4
             };

@@ -83,14 +83,12 @@
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
                     <TextBlock Text="Bibliothek:" VerticalAlignment="Center" Foreground="#8E8E93" Margin="0,0,15,0" FontWeight="Medium"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                        <ItemsControl Name="FaecherLeiste">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Width="1100">
+                        <!-- Wir nutzen ein direktes StackPanel statt ItemsControl für die manuelle Befüllung im Backend -->
+                        <StackPanel x:Name="FaecherContainer" Orientation="Horizontal" VerticalAlignment="Center">
+                            <!-- Test-Button: Jetzt wird er sichtbar sein -->
+                            
+                        </StackPanel>
                     </ScrollViewer>
                 </StackPanel>
             </Grid>
